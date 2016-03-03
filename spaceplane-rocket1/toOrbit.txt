@@ -1,0 +1,76 @@
+print "PROGRAM START".
+
+lock throttle to 1.
+
+wait 1.
+print "3".
+wait 1.
+print "2".
+wait 1.
+print "1".
+wait 1.
+print "GO!".
+stage.
+
+print "   Climb stage 1".
+LOCK STEERING TO HEADING(90, 10).
+
+wait until SHIP:ALTITUDE > 80.
+print "Retracting landing gear".
+GEAR OFF.
+
+wait until SHIP:ALTITUDE > 500.
+
+print "   Climb stage 2".
+LOCK STEERING TO HEADING(90, 20).
+
+wait until SHIP:ALTITUDE > 1000.
+
+print "   Climb stage 3".
+LOCK STEERING TO HEADING(90, 30).
+
+print "Waiting speed burn altitude".
+wait until SHIP:ALTITUDE > 15000.
+
+print "SPEED BURN".
+LOCK STEERING TO HEADING(90, 8).
+
+print "Waiting for orbital burn altitude".
+wait until SHIP:ALTITUDE > 22000.
+
+print "ORBIT BURN".
+
+//increase pitch to jump out faster from athmosphere
+LOCK STEERING TO HEADING(90, 15).
+
+//LOCK STEERING TO HEADING(90, 45).
+//start the rocket engine
+stage.
+
+print "Waiting for orbital apoapsis".
+wait until apoapsis > 75000.
+
+lock throttle to 0.
+LOCK STEERING TO HEADING(90, 0).
+
+print "Waiting till apoapsis for circularization burn".
+//we take about 20 sec to circularize
+wait until eta:apoapsis < 10.
+
+print "CIRCULARIZATION BURN".
+lock steering to prograde.
+lock throttle to 1.
+
+DECLARE periapsisTarget TO apoapsis - 1000.
+
+wait until periapsis > periapsisTarget.
+lock throttle to 0.
+print "CIRCULARIZATION COMPLETE, you should now be in a " + periapsisTarget + " orbit".
+print "Have fun, fly save, don't drink and fly, be polite with ugly alien".
+
+//let the throttle be 0 after all
+SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+
+unlock all.
+print "PROGRAM END".
+
